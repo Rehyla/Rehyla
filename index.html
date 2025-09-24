@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Activity: Tap the Verbs</title>
+<style>
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #ffe6f0, #f8bbd0, #f3e5f5, #e1bee7);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #4a235a;
+}
+.container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    max-width: 950px;
+    width: 95%;
+    text-align: center;
+    border: 2px solid #f8bbd0;
+}
+h2 {
+    margin-bottom: 20px;
+    color: #ad1457;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 28px;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(244,143,177,0.6);
+}
+p {
+    line-height: 1.8;
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #6a1b9a;
+    text-align: justify;
+}
+.dropzone {
+    border: 2px dashed #ce93d8;
+    padding: 4px 12px;
+    margin: 0 4px;
+    min-width: 70px;
+    display: inline-block;
+    border-radius: 10px;
+    background: #fce4ec;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    color: #7b1fa2;
+    cursor: pointer;
+}
+.dropzone.active {
+    border-color: #ad1457;
+    background: #f3e5f5;
+    animation: pulse 0.8s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 6px rgba(244,143,177,0.4); }
+    50% { transform: scale(1.1); box-shadow: 0 0 16px rgba(244,143,177,0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 6px rgba(244,143,177,0.4); }
+}
+.verb {
+    padding: 12px 20px;
+    background: #f48fb1;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    border: 1px solid #f06292;
+    display: inline-block;
+    margin: 4px;
+}
+.verb:hover {
+    background: #ec407a;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px rgba(244,143,177,0.8);
+}
+.selected {
+    border: 3px solid #4a235a !important;
+}
+.correct {
+    background: #c8e6c9 !important;
+    border-color: #43a047 !important;
+    color: #2e7d32;
+    box-shadow: 0 0 10px rgba(67,160,71,0.6);
+}
+.wrong {
+    background: #ffcdd2 !important;
+    border-color: #e53935 !important;
+    color: #b71c1c;
+    box-shadow: 0 0 10px rgba(229,57,53,0.6);
+}
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+}
+button {
+    margin-top: 30px;
+    padding: 14px 32px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #f48fb1, #ba68c8);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+button:hover {
+    background: linear-gradient(135deg, #ba68c8, #f48fb1);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0 14px rgba(244,143,177,0.8);
+}
+.verbs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>The Little Mermaid</h2>
+<p>
+Once upon a time, there <span class="dropzone" data-answer="was"></span> a little mermaid named Ariel who <span class="dropzone" data-answer="loved"></span> the human world. Every day, she <span class="dropzone" data-answer="swam"></span> near the shore and <span class="dropzone" data-answer="watched"></span> humans closely. One day, she <span class="dropzone" data-answer="saw"></span> Prince Eric and immediately <span class="dropzone" data-answer="fell"></span> in love. She <span class="dropzone" data-answer="saved"></span> him from drowning and <span class="dropzone" data-answer="brought"></span> him to the shore. Ariel <span class="dropzone" data-answer="wanted"></span> to be with him, so she <span class="dropzone" data-answer="went"></span> to Ursula, who <span class="dropzone" data-answer="gave"></span> her legs but <span class="dropzone" data-answer="took"></span> her voice. Ariel <span class="dropzone" data-answer="walked"></span> on land, <span class="dropzone" data-answer="met"></span> Eric again, and they spent days exploring the kingdom. Ursula <span class="dropzone" data-answer="tricked"></span> Eric using her magic, but Ariel <span class="dropzone" data-answer="fought"></span> bravely. Eric <span class="dropzone" data-answer="killed"></span> Ursula with a ship. Ariel regained her voice and finally <span class="dropzone" data-answer="married"></span> Eric. They <span class="dropzone" data-answer="lived"></span> happily ever after, sharing adventures across the seas and spreading joy wherever they went.
+</p>
+
+<div class="verbs" id="verbsContainer">
+<!-- Verbs will be dynamically rendered -->
+</div>
+<button id="checkBtn">Check Answers</button>
+</div>
+
+<script>
+let verbsList = ["was","loved","swam","watched","saw","fell","saved","brought","wanted","went","gave","took","walked","met","tricked","fought","killed","married","lived"];
+
+const verbsContainer = document.getElementById("verbsContainer");
+const dropzones = document.querySelectorAll(".dropzone");
+let selectedVerb = null;
+
+// Mezclar y renderizar
+function shuffle(array){ return array.sort(() => Math.random() - 0.5); }
+function renderVerbs(){
+    verbsContainer.innerHTML = "";
+    shuffle(verbsList).forEach(v=>{
+        const verbDiv = document.createElement("div");
+        verbDiv.textContent = v;
+        verbDiv.classList.add("verb");
+        verbDiv.addEventListener("click", verbClickHandler);
+        verbsContainer.appendChild(verbDiv);
+    });
+}
+
+// Click verbo
+function verbClickHandler(e){
+    if(selectedVerb) selectedVerb.classList.remove("selected");
+    selectedVerb = e.target;
+    selectedVerb.classList.add("selected");
+}
+
+// Click dropzone
+dropzones.forEach(zone=>{
+    zone.addEventListener("click", ()=>{
+        dropzones.forEach(z=> z.classList.remove("active"));
+        zone.classList.add("active");
+        if(selectedVerb){
+            // Devolver anterior verbo
+            if(zone.textContent){
+                verbsList.push(zone.textContent);
+            }
+            zone.textContent = selectedVerb.textContent;
+            zone.classList.add("fade-in");
+            verbsList = verbsList.filter(v=> v!== selectedVerb.textContent);
+            selectedVerb = null;
+            renderVerbs();
+        }
+    });
+});
+
+// Verificar
+document.getElementById("checkBtn").addEventListener("click", ()=>{
+    let allCorrect = true;
+    dropzones.forEach(zone=>{
+        const given = zone.textContent.trim().toLowerCase();
+        const answer = zone.dataset.answer.toLowerCase();
+        if(!given){
+            zone.classList.remove("correct","wrong"); // no marcar vacío
+            allCorrect = false;
+        } else if(given===answer){
+            zone.classList.add("correct");
+            zone.classList.remove("wrong");
+        } else {
+            zone.classList.add("wrong");
+            zone.classList.remove("correct");
+            allCorrect = false;
+        }
+    });
+    if(allCorrect){
+        alert("🌟 Perfect! You completed the exercise.");
+    }
+});
+
+// Render inicial
+renderVerbs();
+</script>
+</body>
+</html>
